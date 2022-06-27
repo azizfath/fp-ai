@@ -5,6 +5,7 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
+
 #define BLYNK_AUTH_TOKEN "uw4iQYRC6ZROnqbkCKt4HqGYmwnMp37F"
 #define BLYNK_PRINT Serial
 // W, H, MOSI, CLK, DC, RS, CS  for OLED SPI connection
@@ -34,7 +35,7 @@ double probBA, meanBA = 38.09, stdevBA = 2.501687588;
 float temp, pi = 3.14;
 String kondisi;
 
-float temps() //temperature sensor calculation
+float temps() // temperature sensor calculation
 {
     int Vo = analogRead(33);
     float R1 = 8000, logR2, R2, T, Tc, Tf, c1 = 1.5858696695070901e-03, c2 = 1.3000527215930986e-4, c3 = 7.305028121166598e-7;
@@ -64,29 +65,29 @@ void program()
 
     if (probBB > probPB && probBB > probNO && probBB > probPA && probBB > probBA)
     {
-        kondisi="Bahaya Bawah";
+        kondisi = "Bahaya Bawah";
     }
     if (probPB > probBB && probPB > probNO && probPB > probPA && probPB > probBA)
     {
-        kondisi="Peringatan Bawah";
+        kondisi = "Peringatan Bawah";
     }
     if (probNO > probBB && probNO > probPB && probNO > probPA && probNO > probBA)
     {
-        kondisi="Normal";
+        kondisi = "Normal";
     }
     if (probPA > probBB && probPA > probPB && probPA > probNO && probPA > probBA)
     {
-        kondisi="Peringatan Atas";
+        kondisi = "Peringatan Atas";
     }
     if (probBA > probBB && probBA > probPB && probBA > probNO && probBA > probPA)
     {
-        kondisi="Bahaya Atas";
+        kondisi = "Bahaya Atas";
     }
 
     Blynk.virtualWrite(V1, kondisi);
 }
 
-void oledScreen()   // oled function
+void oledScreen() // oled function
 {
     display.clearDisplay();
     display.setTextSize(3);
@@ -95,8 +96,20 @@ void oledScreen()   // oled function
     display.print(temps());
     display.print(char(247));
     display.println("C");
-    display.setTextSize(1);
-	display.print(kondisi);
+    display.setTextSize(2);
+
+    int index = kondisi.indexOf(' ');
+    if (index == -1)
+    {
+        display.print(kondisi);
+    }
+    else
+    {
+        display.println(kondisi.substring(0, index));
+        display.println(kondisi.substring(index + 1));
+    }
+
+    // display.print(kondisi);
     display.display();
 }
 
@@ -106,7 +119,8 @@ void setup()
     if (!display.begin(SSD1306_SWITCHCAPVCC))
     {
         Serial.println(F("SSD1306 allocation failed"));
-        for (;;);
+        for (;;)
+            ;
     }
     display.setRotation(2);
     display.clearDisplay();
@@ -127,10 +141,11 @@ void loop()
 {
 
     currentMillis = millis();
-     if (currentMillis - previousMillis >= interval){
-       oledScreen();                   //calling oled function
-       previousMillis = currentMillis;
-     }
+    if (currentMillis - previousMillis >= interval)
+    {
+        oledScreen(); // calling oled function
+        previousMillis = currentMillis;
+    }
     Blynk.run();
     timer.run();
 }
