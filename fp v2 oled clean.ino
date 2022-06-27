@@ -13,15 +13,15 @@
 Adafruit_SSD1306 display(128, 64, 23, 18, 16, 17, 5);
 
 char auth[] = BLYNK_AUTH_TOKEN;
-char ssid[] = "Kost Santri 3";
-char pass[] = "satusampailima";
+char ssid[] = "IN2023";
+char pass[] = "azizfath";
 
 BlynkTimer timer;
 
 double probBB, meanBB = 10.87, stdevBB = 3.149439842; // BAHAYA BAWAH
 double probPB, meanPB = 18.97, stdevPB = 1.428389229; // PERINGATAN BAWAH
 double probNO, meanNO = 26.85, stdevNO = 3.223024688; // NORMAL
-double probPA, meanPA = 33.69, stdevPA = 0.96095498; // PERINGATAN ATAS
+double probPA, meanPA = 33.69, stdevPA = 0.96095498;  // PERINGATAN ATAS
 double probBA, meanBA = 38.09, stdevBA = 2.501687588; // BAHAYA ATAS
 float temp, pi = 3.14;
 String kondisi;
@@ -91,7 +91,8 @@ void oledScreen() // oled function
     display.setTextSize(2);
 
     int index = kondisi.indexOf(' ');
-    if (index == -1) display.print(kondisi);
+    if (index == -1)
+        display.print(kondisi);
     else
     {
         display.println(kondisi.substring(0, index));
