@@ -19,8 +19,8 @@ void setup() {
     Serial.begin(115200);
 }
 
-void loop() {
-    temp = //READ TEMEPERATURE
+void baca() {
+    temp = temps
     
     probBB = (1 / (sqrt(2 * pi * stdevBB))) * exp(-(pow(temp - meanBB, 2) / (pow(2 * stdevBB, 2))));
 
